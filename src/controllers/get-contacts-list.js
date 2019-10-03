@@ -14,13 +14,11 @@ const getContactsList = async (req, res) => {
         if (!result) {
             return generateErrorResponse(res, 500, "Internal server Error");
         }
-        generateSuccessResponse(res,
-            200,
-            parseInt(req.body.pageNumber) <= result.pages ?
-                `Page ${req.body.pageNumber} of contacts fetched successfully` :
-                `There is only ${result.pages} page(s)`,
-            result.docs);
-
+        if (parseInt(req.body.pageNumber) <= result.pages) {
+            generateSuccessResponse(res, 200, `Page ${req.body.pageNumber} of contacts fetched successfully`, result.docs);
+        } else {
+            generateErrorResponse(res, 400, `There is only ${result.pages} page(s)`);
+        }
 
     } catch (error) {
         return generateErrorResponse(res, 500, "Internal server Error");

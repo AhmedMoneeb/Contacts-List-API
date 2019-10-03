@@ -124,16 +124,13 @@ describe('POST /contacts/getList', function () {
         request(app)
             .post("/contacts/getList")
             .send(requestBody)
-
-            .expect(function (res) {
-                if (res.body.data.length !== 0) {
-                    throw new Error("Data array should be empty");
-                }
-                delete res.body.data
-            })
-            .expect(200, {
-                "statusCode": 200,
-                "message": "There is only 2 page(s)"
+            .expect(400, {
+                "statusCode": 400,
+                "errors": [
+                    {
+                        "message": "There is only 2 page(s)"
+                    }
+                ]
             }, done)
     });
 
